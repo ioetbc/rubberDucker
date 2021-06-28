@@ -10,7 +10,8 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:rubber-ducker.helloWorld"
+		"onCommand:rubber-ducker.helloWorld",
+		"onCommand:rubber-ducker.refresh"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
@@ -18,6 +19,10 @@
 			{
 				"command": "rubber-ducker.helloWorld",
 				"title": "Hello World"
+			},
+			{
+				"command": "rubber-ducker.refresh",
+				"title": "Refresh"
 			}
 		]
 	},
