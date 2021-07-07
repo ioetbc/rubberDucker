@@ -20,6 +20,15 @@
 </ul>
 
 
+<button on:click={() => {
+  tsvscode.postMessage({type: 'onInfo', value: 'info message'});
+}}>click this for info</button>
+
+<button on:click={() => {
+  tsvscode.postMessage({type: 'onError', value: 'error message'});
+}}>click this for error</button>
+
+
 
 
 
