@@ -11,9 +11,9 @@
 	],
 	"activationEvents": [
 		"onView:rubber-ducker-sidebar",
-		"onCommand:rubber-ducker.helloWorld",
 		"onCommand:rubber-ducker.refresh",
-		"onCommand:rubber-ducker.addTodo"
+		"onCommand:rubber-ducker.addTodo",
+		"onCommand:rubber-ducker.authenticate"
 	],
 	"main": "./dist/extension.js",
 	"contributes": {
@@ -39,16 +39,16 @@
 		},
 		"commands": [
 			{
-				"command": "rubber-ducker.helloWorld",
-				"title": "Hello World"
-			},
-			{
 				"command": "rubber-ducker.refresh",
 				"title": "Refresh"
 			},
 			{
 				"command": "rubber-ducker.addTodo",
 				"title": "Add todo from selection"
+			},
+			{
+				"command": "rubber-ducker.authenticate",
+				"title": "Authenticate"
 			}
 		]
 	},
@@ -74,7 +74,7 @@
 		"@types/mocha": "^8.0.0",
 		"@types/node": "^12.11.7",
 		"@types/node-fetch": "^2.5.7",
-		"@types/polka": "^0.5.1",
+		"@types/polka": "^0.5.3",
 		"@types/vscode": "^1.51.0",
 		"@typescript-eslint/eslint-plugin": "^4.1.1",
 		"@typescript-eslint/parser": "^4.1.1",
@@ -96,6 +96,7 @@
 		"webpack-cli": "^4.2.0"
 	},
 	"dependencies": {
+		"polka": "^0.5.2",
 		"postcss": "^8.3.5"
 	}
 }

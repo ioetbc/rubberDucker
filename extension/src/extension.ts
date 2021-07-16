@@ -1,8 +1,11 @@
 import * as vscode from 'vscode';
-import { HelloWorldPanel } from './HelloWorldPanel';
 import { SidebarProvider } from './SidebarProvider';
+import { authenticate } from './authenticate'
+import { TokenManager } from './tokenManager';
 
 export function activate(context: vscode.ExtensionContext) {
+	TokenManager.globalState = context.globalState
+	console.log('token value is: ', TokenManager.getToken())
 	const sidebarProvider = new SidebarProvider(context.extensionUri);
 	// add a button to the bottom bar to run add todo command
 	const item = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right);
@@ -26,9 +29,14 @@ export function activate(context: vscode.ExtensionContext) {
 		sidebarProvider._view?.webview.postMessage({ type: 'new-todo', value: text });
 	}));
 
-	context.subscriptions.push(vscode.commands.registerCommand('rubber-ducker.helloWorld', () => {
-		HelloWorldPanel.createOrShow(context.extensionUri);
+	context.subscriptions.push(vscode.commands.registerCommand('rubber-ducker.authenticate', () => {
+		try {
+			authenticate()
+		} catch(error) {
+			console.log('errrrr', error)
+		}
 	}));
+
 	context.subscriptions.push(vscode.commands.registerCommand('rubber-ducker.refresh', async () => {
 		// // to start the app (control f5 then you can press control r to reload the app)
 		await vscode.commands.executeCommand("workbench.action.closeSidebar");
