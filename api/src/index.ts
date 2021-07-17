@@ -17,8 +17,8 @@ const main = async () => {
       logging: !PROD,
       synchronize: !PROD,
       entities: [join(__dirname, './entities/*.*')],
-      username: 'ioetbc',
-      password: 'therethere'
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD
    })
 
    const app = express();
@@ -26,13 +26,15 @@ const main = async () => {
    passport.serializeUser((user: any, done) => {
       done(null, user.accessToken);
     });
+
    app.use(passport.initialize());
+
+   // stratergy config
    passport.use(new GitHubStrategy({
       clientID: process.env.GITHUB_CLIENT_ID!,
       clientSecret: process.env.GITHUB_CLIENT_SECRET!,
       callbackURL: "http://localhost:3002/auth/github/callback"
     }, async (_, __, profile, cb) => {
-       console.log('profile', profile)
          let user = await User.findOne({ where: { githubId: profile.id! }})
          if (!user) {
             user = await User.create({ name: profile.username!, githubId: profile.id! }).save()
@@ -40,7 +42,11 @@ const main = async () => {
          cb(null, { accessToken: jwt.sign({ userId: user.id }, process.env.JWT_SIGNATURE!, { expiresIn: '1y' }) })
       }
    ));
+
+   // to load the login screen
    app.get('/auth/github', passport.authenticate('github', { session: false }))
+
+   // once login is successful see callbackURL
    app.get('/auth/github/callback', passport.authenticate('github', { session: false }),
    (req: any, res) => {
       res.redirect(`http://localhost:54321/auth/${req.user.accessToken}`)

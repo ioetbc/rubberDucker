@@ -13,7 +13,7 @@ export const authenticate = () => {
         }
 
         await TokenManager.setToken(token)
-        res.end('auth was successful,  you can close this now')
+        res.end('auth was successful, you can close this now')
         app.server?.close()
     })
     app.listen(54321, (err: Error) => {
