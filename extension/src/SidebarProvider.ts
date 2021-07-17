@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { authenticate } from "./authenticate";
 import { apiBaseUrl } from "./constants";
 import { getNonce } from "./getNonce";
 import { TokenManager } from "./tokenManager";
@@ -23,6 +24,15 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
 
     webviewView.webview.onDidReceiveMessage(async (data) => {
       switch (data.type) {
+        case "authenticate": {
+          authenticate(() => {
+            webviewView.webview.postMessage({ type: 'token', value: TokenManager.getToken() })
+          })
+          break
+        }
+        case "logout": {
+          TokenManager.setToken("")
+        }
         case "get-token": {
           // send accessToken back to webview (sidebar.svelete) 
           webviewView.webview.postMessage({ type: 'token', value: TokenManager.getToken() })

@@ -31,7 +31,9 @@ export function activate(context: vscode.ExtensionContext) {
 
 	context.subscriptions.push(vscode.commands.registerCommand('rubber-ducker.authenticate', () => {
 		try {
-			authenticate()
+			authenticate(() => {
+				sidebarProvider._view?.webview.postMessage({ type: 'token', value: TokenManager.getToken() })
+			})
 		} catch(error) {
 			console.log('errrrr', error)
 		}

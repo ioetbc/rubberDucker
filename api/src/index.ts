@@ -5,10 +5,12 @@ import { createConnection } from 'typeorm'
 import { PROD } from './constants'
 import { join } from 'path'
 import { User } from './entities/User'
+import { Todo } from './entities/Todo'
 import { Strategy as GitHubStrategy } from 'passport-github'
 import passport from 'passport'
 import jwt from 'jsonwebtoken'
 import cors from 'cors'
+import { isAuth } from './isAuth'
 
 const main = async () => {
    await createConnection({
@@ -29,6 +31,7 @@ const main = async () => {
     });
 
    app.use(passport.initialize());
+   app.use(express.json())
 
    // stratergy config
    passport.use(new GitHubStrategy({
@@ -51,6 +54,30 @@ const main = async () => {
    app.get('/auth/github/callback', passport.authenticate('github', { session: false }),
    (req: any, res) => {
       res.redirect(`http://localhost:54321/auth/${req.user.accessToken}`)
+   })
+
+   app.get('/todo', isAuth, async(req: any, res) => {
+      const todos = await Todo.find({ where: { creatorId: req.userId }, order: { id: 'DESC' } })
+      res.send({ todos })
+   })
+
+   app.post('/todo', isAuth, async (req: any, res) => {
+      const todo = await Todo.create({ text: req.body.text, creatorId: req.userId } as Todo).save()
+      res.send({ todo })
+   })
+
+   app.put('/todo', isAuth, async (req: any, res) => {
+      const todo = await Todo.findOne(req.body.id)
+      if (!todo) {
+         res.send({ todo: null })
+         return
+      }
+      if (todo.creatorId !== req.userId) {
+         throw new Error('Not authorized')
+      }
+      todo.completed = !todo.completed
+      await todo.save()
+      res.send({ todo })
    })
 
    // returns the current user logged in based of the JWT token passed from the extension
