@@ -97,6 +97,7 @@
 	},
 	"dependencies": {
 		"polka": "^0.5.2",
-		"postcss": "^8.3.5"
+		"postcss": "^8.3.5",
+		"socket.io-client": "^4.1.3"
 	}
 }

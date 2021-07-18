@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import type { User } from '../types';
   import Todos from './Todos.svelte';
+  import Chat from './Chat.svelte';
   let accessToken = ''
   let loading = true
   let user: User
@@ -39,7 +40,7 @@
 {:else if user}
   <pre>{JSON.stringify(user, null, 2)}</pre>
   {#if page === 'todos'}
-  <Todos {user} {accessToken}  />
+  <Chat {user} {accessToken}  />
   <button on:click={() => page = 'contact'}>go to contact page</button>
   {/if}
   {#if page === 'contact'}
