@@ -11,13 +11,18 @@ import passport from 'passport'
 import jwt from 'jsonwebtoken'
 import cors from 'cors'
 import { isAuth } from './isAuth'
+const io = require('socket.io')(3003, {
+   cors: {
+      origin: ['vscode-webview://webviewview-rubber-ducker-sidebar', 'http://localhost:3000']
+   }
+})
 
 const main = async () => {
    await createConnection({
       database: 'rubber-ducker',
       type: 'postgres',
       port: 5432,
-      logging: !PROD,
+      logging: false,
       synchronize: !PROD,
       entities: [join(__dirname, './entities/*.*')],
       username: process.env.DB_USERNAME,
@@ -112,6 +117,12 @@ const main = async () => {
 
    app.get('/', (_req, res) => {
       res.send('fuck yeah')
+   })
+
+   io.on('connection', (socket: any) => {
+      socket.on('message-from-client', (message: string) => {
+         socket.broadcast.emit('message-from-server', message)
+      })
    })
 
    app.listen(3002, () => {
