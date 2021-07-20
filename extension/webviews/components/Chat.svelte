@@ -39,7 +39,7 @@
 <button on:click={() => {
   sendMessage(text)
   text = ''
-}}>send message</button>
+}}>send messages</button>
 
 <button on:click={() => {
   activateLiveShare()
