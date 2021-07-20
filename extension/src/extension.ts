@@ -40,12 +40,8 @@ export function activate(context: vscode.ExtensionContext) {
 	}));
 
 	context.subscriptions.push(vscode.commands.registerCommand('rubber-ducker.refresh', async () => {
-		// // to start the app (control f5 then you can press control r to reload the app)
 		await vscode.commands.executeCommand("workbench.action.closeSidebar");
 		await vscode.commands.executeCommand("workbench.view.extension.rubber-ducker-sidebar-view");
-		// setTimeout(() => {
-		// 	vscode.commands.executeCommand("workbench.action.webview.openDeveloperTools");
-		// }, 500);
 	}));
 }
 
