@@ -46,18 +46,11 @@ export class SidebarProvider implements vscode.WebviewViewProvider {
           break;
         }
         case "live-share": {
-          return vscode.commands.executeCommand("liveshare.start").then((data) => data)
-              // TODO save the url in global state to access in the chat.svelete file
-              // THEN can remove the setTimeout shit
-              // https://prod.liveshare.vsengsaas.visualstudio.com/join?376621C5FFDB0DA0FC148C08B048F47799AA
-              // webviewView.webview.postMessage({ type: 'token', value: TokenManager.getToken() })
-              // data.authority + data.query
-
-              // authority: "prod.liveshare.vsengsaas.visualstudio.com"
-              // path: "/join"
-              // query: "376621C5FFDB0DA0FC148C08B048F47799AA"
-              // scheme: "https")
-          break;
+          vscode.commands.executeCommand("liveshare.start").then((data: any) => {
+              const url = `${data.scheme}://${data.authority}${data.path}?${data.query}`
+              webviewView.webview.postMessage({ type: 'token', value: url })
+          })
+          break
         }
         case "onError": {
           if (!data.value) {

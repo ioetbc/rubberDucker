@@ -13,13 +13,22 @@
     // post message to SidebarProvider with value of get-token
     tsvscode.postMessage({ type: 'get-token' })
 
-    socket = io('https://rubber-ducker.herokuapp.com:33859')
+    socket = io('https://rubber-ducker.herokuapp.com')
 
     socket.on('connect', () => {
       socket.on('message-from-server', (message: string) => {
         chatMessage = [message, ...chatMessage]
       })
     })
+
+    window.addEventListener('message', async event => {
+        const message = event.data;
+        switch (message.type) {
+            case 'token':
+              sendMessage(message.value)
+            break;
+        }
+    });
   })
 
   const sendMessage = (message: string) => {

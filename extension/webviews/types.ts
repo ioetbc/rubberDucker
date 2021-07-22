@@ -1,5 +1,6 @@
 export type User = {
-    id: string
-    name: string
-    githubId: string
+    id: number
+    user_name: string
+    github_id: string
+    avatar: string
 } | null
