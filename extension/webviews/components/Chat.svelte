@@ -13,7 +13,7 @@
     // post message to SidebarProvider with value of get-token
     tsvscode.postMessage({ type: 'get-token' })
 
-    socket = io('http://localhost:3003')
+    socket = io('https://rubber-ducker.herokuapp.com:33859')
 
     socket.on('connect', () => {
       socket.on('message-from-server', (message: string) => {

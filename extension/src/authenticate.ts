@@ -5,6 +5,7 @@ import { TokenManager } from './tokenManager'
 
 export const authenticate = (cb: () => void) => {
     const app = polka()
+    // listens out for the redirect that is happening server side
     app.get(`/auth/:token`, async (req, res) => {
         const { token } = req.params
         if (!token) {

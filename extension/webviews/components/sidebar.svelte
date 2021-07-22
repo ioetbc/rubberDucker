@@ -20,7 +20,7 @@
             case 'token':
               // fetches current user using the accessToken
               accessToken = message.value
-              const response = await fetch(`${apiBaseUrl}/me`, {
+              const response = await fetch(`https://rubber-ducker.herokuapp.com/me`, {
                 headers: { authorization: `Bearer ${accessToken}`}
               })
               const data = await response.json()
@@ -50,12 +50,12 @@
   <button on:click={() => {
     accessToken = ''
     user = null
-    // tsvscode.postMessage({ type: 'logout' })
+    tsvscode.postMessage({ type: 'logout' })
   }}>logout</button>
 {:else}
   <div>no user is logged in</div>
   <button on:click={() => {
-      // tsvscode.postMessage({ type: 'authenticate' })
+      tsvscode.postMessage({ type: 'authenticate' })
   }}>login with github</button>
 {/if}
 
